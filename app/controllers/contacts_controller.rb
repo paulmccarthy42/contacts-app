@@ -1,6 +1,6 @@
 class ContactsController < ApplicationController
   def print_first_contact
-    render json: Contact.first.as_json
+    render json: Contact.find_by("id":1).as_json
   end
 
   def print_all_contacts
