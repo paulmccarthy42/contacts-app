@@ -34,10 +34,10 @@ def read
 end
 
 def update
-  print "Let's test on email for contact 3. What would you like it to be? "
+  print "Let's test on phone for contact 2. What would you like it to be? "
   params = {}
-  params["email"] = gets.chomp
-  response = Unirest.put("http://localhost:3000/contacts/3", parameters: params)
+  params["phone"] = gets.chomp
+  response = Unirest.put("http://localhost:3000/contacts/2", parameters: params )
   pp response.body
 end
 
@@ -70,10 +70,13 @@ while true
   end
   choice = gets.chomp
   choice_num = choice.to_i
-  if choice_num < 0 || choice_num > 5 || choice_num != choice
+  if choice_num < 0 || choice_num > 5 || choice_num.to_s != choice
+    puts choice_num < 0
+    puts choice_num > 5
+    puts choice_num != choice
     break
   else
-    routing[choice].call
+    routing[choice_num].call
   end
   gets.chomp
 end

@@ -1,6 +1,6 @@
 class ContactsController < ApplicationController
   def index
-    render json: Contact.all
+    render json: Contact.all.as_json
   end
 
   def create
@@ -10,7 +10,7 @@ class ContactsController < ApplicationController
       email: params["email"],
       phone_number: params["phone_number"])
     new_contact.save
-    render json: new_contact
+    render json: new_contact.as_json
   end
 
   def show
@@ -25,7 +25,7 @@ class ContactsController < ApplicationController
     chosen_contact.email = params["email"] || chosen_contact.email
     chosen_contact.phone_number = params["phone_number"] || chosen_contact.phone_number
     chosen_contact.save
-    render json: chosen_contact
+    render json: chosen_contact.as_json
   end
 
   def destroy
