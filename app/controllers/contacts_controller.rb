@@ -1,22 +1,36 @@
 class ContactsController < ApplicationController
-  def print_first_contact
-    render json: Contact.find_by("id":1).as_json
+  def index
+    render json: Contact.all
   end
 
-  def print_all_contacts
-    render json: Contact.all.sort_by {|x| x["id"]}.as_json
+  def create
+    new_contact = Contact.new(
+      first_name: params["first_name"],
+      last_name: params["last_name"],
+      email: params["email"],
+      phone_number: params["phone_number"])
+    new_contact.save
+    render json: new_contact
   end
 
-  def print_contact_friendly
-    contacts = Contact.all.sort_by {|x| x["id"]}
+  def show
+    id = params["id"]
+    render json: Contact.find_by(id: id).as_json
+  end
 
-    text = ""
-    contacts.each do |person|
-      text += "#{person["first_name"]} #{person["last_name"]}\n"
-      text += "Email: #{person["email"]}\n"
-      text += "Phone Number: #{person["phone_number"]}\n\n"
-    end
+  def update
+    chosen_contact = Contact.find_by(id: params["id"])
+    chosen_contact.first_name = params["first_name"] || chosen_contact.first_name
+    chosen_contact.last_name = params["last_name"] || chosen_contact.last_name
+    chosen_contact.email = params["email"] || chosen_contact.email
+    chosen_contact.phone_number = params["phone_number"] || chosen_contact.phone_number
+    chosen_contact.save
+    render json: chosen_contact
+  end
 
-    render json: text
+  def destroy
+    chosen_contact = Contact.find_by(id: params["id"])
+    chosen_contact.destroy
+    render json: "Successfully destroyed"
   end
 end
