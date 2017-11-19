@@ -1,6 +1,17 @@
 require "unirest"
 require "pp"
 
+def display
+  response = Unirest.get("http://localhost:3000/contacts")
+  contacts = response.body
+  contacts.each do |person|
+    puts "#{person["first_name"]} #{person["last_name"]}"
+    puts "Email: #{person["email"]}"
+    puts "Phone Number: #{person["phone_number"]}"
+    puts
+  end
+end
+
 def create
   params = {}
   print "First name? " 
@@ -42,33 +53,27 @@ def destroy
   puts response.body
 end
 
+routing = [method(:display),
+  method(:create),
+  method(:read),
+  method(:update),
+  method(:destroy)
+]
+
 while true
   system "clear"
-  response = Unirest.get("http://localhost:3000/contacts")
-  contacts = response.body
-  contacts.each do |person|
-    puts "#{person["first_name"]} #{person["last_name"]}"
-    puts "Email: #{person["email"]}"
-    puts "Phone Number: #{person["phone_number"]}"
-    puts
-  end
+  display
 
   puts "What would you like to do?"
-  puts "1. Create"
-  puts "2. Read"
-  puts "3. Update"
-  puts "4. Destroy"
-  choice = gets.chomp.to_i
-  if choice == 0
+  routing.each do |method|
+    puts "#{routing.index(method)}. #{method.name.capitalize}"
+  end
+  choice = gets.chomp
+  choice_num = choice.to_i
+  if choice_num < 0 || choice_num > 5 || choice_num != choice
     break
-  elsif choice == 1
-    create
-  elsif choice == 2
-    read
-  elsif choice == 3
-    update
-  elsif choice == 4
-    destroy
+  else
+    routing[choice].call
   end
   gets.chomp
 end
