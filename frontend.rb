@@ -36,7 +36,7 @@ end
 def update
   print "Let's test on phone for contact 2. What would you like it to be? "
   params = {}
-  params["phone"] = gets.chomp
+  params["phone_number"] = gets.chomp
   response = Unirest.put("http://localhost:3000/contacts/2", parameters: params )
   pp response.body
 end
@@ -71,9 +71,6 @@ while true
   choice = gets.chomp
   choice_num = choice.to_i
   if choice_num < 0 || choice_num > 5 || choice_num.to_s != choice
-    puts choice_num < 0
-    puts choice_num > 5
-    puts choice_num != choice
     break
   else
     routing[choice_num].call

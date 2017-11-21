@@ -8,7 +8,7 @@ class Contact < ApplicationRecord
   end
 
   def japanified_phone_number
-    if phone_number == nil
+    if phone_number == nil or phone_number == ""
       nil
     else
       return "+81 " + phone_number
@@ -21,8 +21,10 @@ class Contact < ApplicationRecord
       first_name: first_name,
       last_name: last_name,
       full_name: full_name,
+      middle_name: middle_name,
       email: email,
       phone_number: japanified_phone_number,
+      bio: bio,
       created_at: created_at,
       updated_at: friendly_updated_at
     }
