@@ -43,7 +43,7 @@ def update
   params = {}
   params["phone_number"] = gets.chomp
   response = Unirest.put("http://localhost:3000/contacts/2", parameters: params )
-  pp response.body
+  puts response.code == 200 ? "Success" : "Sorry, code #{response.code}. Please try again later"
 end
 
 def destroy
