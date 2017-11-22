@@ -5,7 +5,8 @@ def display
   response = Unirest.get("http://localhost:3000/contacts")
   contacts = response.body
   contacts.each do |person|
-    puts "#{person["first_name"]} #{person["last_name"]}"
+    puts "#{person["first_name"]} #{person["middle_name"]} #{person["last_name"]}"
+    puts "Bio: #{person["bio"]}"
     puts "Email: #{person["email"]}"
     puts "Phone Number: #{person["phone_number"]}"
     puts
@@ -16,12 +17,16 @@ def create
   params = {}
   print "First name? " 
   params["first_name"] = gets.chomp
+  print "Middle name? "
+  params["middle_name"] = gets.chomp
   print "Last name? "
   params['last_name'] = gets.chomp
   print "Email address? "
   params['email'] = gets.chomp
   print "Phone number? "
   params['phone_number'] = gets.chomp
+  print "Basic Description: "
+  params["bio"] = gets.chomp
   response = Unirest.post("http://localhost:3000/contacts", parameters: params)
   puts response.code == 200 ? "Success" : "Sorry, code #{response.code}. Please try again later"
 end
