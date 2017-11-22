@@ -28,7 +28,7 @@ def create
   print "Basic Description: "
   params["bio"] = gets.chomp
   response = Unirest.post("http://localhost:3000/contacts", parameters: params)
-  puts response.code == 200 ? "Success" : "Sorry, code #{response.code}. Please try again later"
+  puts response.code == 200 ? "Success" : "Sorry, code #{response.code}. Please try again later. Errors #{response.body["errors"]}"
 end
 
 def read
@@ -43,7 +43,7 @@ def update
   params = {}
   params["phone_number"] = gets.chomp
   response = Unirest.put("http://localhost:3000/contacts/2", parameters: params )
-  puts response.code == 200 ? "Success" : "Sorry, code #{response.code}. Please try again later"
+  puts response.code == 200 ? "Success" : "Sorry, code #{response.code}. Please try again later. Errors #{response.body["errors"]}"
 end
 
 def destroy

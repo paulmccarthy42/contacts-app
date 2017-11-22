@@ -11,8 +11,11 @@ class ContactsController < ApplicationController
       email: params["email"],
       phone_number: params["phone_number"],
       bio: params["bio"])
-    new_contact.save
-    render json: new_contact.as_json
+    if new_contact.save
+      render json: new_contact.as_json
+    else
+      render json: {errors: new_contact.errors.full_messages}, status: :bad_request
+    end
   end
 
   def show
@@ -29,7 +32,11 @@ class ContactsController < ApplicationController
     chosen_contact.phone_number = params["phone_number"] || chosen_contact.phone_number
     chosen_contact.bio = params["bio"] || chosen_contact.bio
     chosen_contact.save
-    render json: chosen_contact.as_json
+    if new_contact.save
+      render json: new_contact.as_json
+    else
+      render json: {errors: new_contact.errors.full_messages}, status: :bad_request
+    end
   end
 
   def destroy
