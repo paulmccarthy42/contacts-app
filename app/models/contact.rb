@@ -1,7 +1,13 @@
 class Contact < ApplicationRecord
   validates :first_name, :last_name, :email, presence: true
   validates :email, uniqueness: true
-  validates :email, presence: true
+  validate :email_address_valid
+
+  def email_address_valid
+    if true
+      errors.add(:email, "address is not valid")
+    end
+  end
 
   def friendly_updated_at
     updated_at.strftime("%Y %B %e, %H:%M:%S")
