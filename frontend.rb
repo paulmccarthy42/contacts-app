@@ -58,11 +58,38 @@ def destroy
   puts response.body
 end
 
+def search
+  puts "would you like to search by"
+  puts "[1] First name"
+  puts "[2] Last name"
+  puts '[3] Email'
+  query = [nil, "first_name", "last_name", "email"]
+  params = {}
+  params[:search_field] = query[gets.chomp.to_i]
+  puts "What would you like to search for?"
+  params[:search_input] = gets.chomp
+  params[:search_field] = nil if params[:search_field] == ""
+  params[:search_input] = nil if params[:search_input] == ""
+  response = Unirest.get("http://localhost:3000/contacts", 
+    parameters: params)
+  contacts = response.body
+  contacts.each do |person|
+    puts "#{person["first_name"]} #{person["middle_name"]} #{person["last_name"]}"
+    puts "Bio: #{person["bio"]}"
+    puts "Email: #{person["email"]}"
+    puts "Phone Number: #{person["phone_number"]}"
+    puts
+  end
+end
+
+
+
 routing = [method(:display),
   method(:create),
   method(:read),
   method(:update),
-  method(:destroy)
+  method(:destroy),
+  method(:search)
 ]
 
 while true

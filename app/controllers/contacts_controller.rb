@@ -1,6 +1,13 @@
 class ContactsController < ApplicationController
   def index
-    render json: Contact.all.as_json
+    
+    if params[:search_field]
+      contacts = Contact.where("#{params[:search_field]} = ?", params[:search_input])
+    else
+      contacts = Contact.all
+    end
+    render json: contacts.as_json
+
   end
 
   def create
