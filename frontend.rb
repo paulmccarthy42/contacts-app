@@ -82,8 +82,6 @@ def search
   end
 end
 
-
-
 routing = [method(:display),
   method(:create),
   method(:read),
