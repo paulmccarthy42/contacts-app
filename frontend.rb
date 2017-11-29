@@ -82,17 +82,50 @@ def search
   end
 end
 
+def signup
+  params = {}
+  print "Name: "
+  params["name"] = gets.chomp
+  print "Email: "
+  params["email"] = gets.chomp
+  print "Password: "
+  params["password"] = gets.chomp
+  print "Confirm Password: "
+  params["password_confirmation"] = gets.chomp
+  response = Unirest.post("http://localhost:3000/users", parameters: params)
+  puts response.body
+end
+
+def login
+  params = {}
+  print "Email: "
+  params["email"] = gets.chomp
+  print "Password: "
+  params["password"] = gets.chomp
+  response = Unirest.post("http://localhost:3000/user_token", 
+    parameters: {auth: params})
+  p response.body
+  jwt = response.body["jwt"]
+  Unirest.default_header("Authorization", "Bearer #{jwt}")
+end
+
+def logout
+  Unirest.clear_default_headers()
+end
+
 routing = [method(:display),
   method(:create),
   method(:read),
   method(:update),
   method(:destroy),
-  method(:search)
+  method(:search),
+  method(:signup),
+  method(:login),
+  method(:logout)
 ]
 
 while true
   system "clear"
-  display
 
   puts "What would you like to do?"
   routing.each do |method|
@@ -100,7 +133,7 @@ while true
   end
   choice = gets.chomp
   choice_num = choice.to_i
-  if choice_num < 0 || choice_num > 5 || choice_num.to_s != choice
+  if choice_num < 0 || choice_num > routing.length || choice_num.to_s != choice
     break
   else
     routing[choice_num].call

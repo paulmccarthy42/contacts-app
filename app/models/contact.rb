@@ -3,8 +3,10 @@ class Contact < ApplicationRecord
   validates :email, uniqueness: true
   validate :email_address_valid
 
+  belongs_to :user
+
   def email_address_valid
-    if true
+    if false
       errors.add(:email, "address is not valid")
     end
   end

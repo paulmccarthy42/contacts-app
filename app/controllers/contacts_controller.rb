@@ -1,4 +1,5 @@
 class ContactsController < ApplicationController
+  before_action :authenticate_user
   def index
     
     if params[:search_field]
@@ -6,7 +7,7 @@ class ContactsController < ApplicationController
     else
       contacts = Contact.all
     end
-    render json: contacts.as_json
+    render json: contacts.where("user_id = #{current_user.id}").as_json
 
   end
 
@@ -17,7 +18,8 @@ class ContactsController < ApplicationController
       middle_name: params["middle_name"],
       email: params["email"],
       phone_number: params["phone_number"],
-      bio: params["bio"])
+      bio: params["bio"],
+      user_id: current_user.id)
     if new_contact.save
       render json: new_contact.as_json
     else
